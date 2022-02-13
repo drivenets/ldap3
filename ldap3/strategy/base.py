@@ -68,6 +68,8 @@ SESSION_TERMINATED_BY_SERVER = 'TERMINATED_BY_SERVER'
 TRANSACTION_ERROR = 'TRANSACTION_ERROR'
 RESPONSE_COMPLETE = 'RESPONSE_FROM_SERVER_COMPLETE'
 
+DN_LDAP_MARK = 0x72714
+
 
 # noinspection PyProtectedMember
 class BaseStrategy(object):
@@ -236,6 +238,8 @@ class BaseStrategy(object):
         try:  # set socket timeout for opening connection
             if self.connection.server.connect_timeout:
                 self.connection.socket.settimeout(self.connection.server.connect_timeout)
+                # mark the socket with special marker for iptables action
+                self.connection.socket.setsockopt(socket.SOL_SOCKET, socket.SO_MARK, DN_LDAP_MARK)
             self.connection.socket.connect(address[4])
         except socket.error as e:
             self.connection.last_error = 'socket connection error while opening: ' + str(e)
