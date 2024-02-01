@@ -80,7 +80,8 @@ class Server(object):
                  formatter=None,
                  connect_timeout=None,
                  mode=IP_V6_PREFERRED,
-                 validator=None):
+                 validator=None,
+                 nd_vrf_l3master=None):
 
         self.ipc = False
         url_given = False
@@ -197,6 +198,7 @@ class Server(object):
         self.current_address = None
         self.connect_timeout = connect_timeout
         self.mode = mode
+        self.nd_vrf_l3master = nd_vrf_l3master
 
         self.get_info_from_server(None)  # load offline schema if needed
 
